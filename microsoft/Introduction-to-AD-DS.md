@@ -7,6 +7,11 @@ The AD DS database is the central store of all the domain objects, such as user 
 - C:/Windows/NTDS, C:/Windows/SYSVOL
 
 > Which component of AD DS is responsible for storing a read-only copy of all objects in a multi-domain forest? 
+>A **Global Catalog server** stores:
+
+* **A *partial* attribute set (PAS)** for *every* object in the forest (from all domains)
+  → This includes only selected attributes that are useful for searching and locating objects (e.g., names, group memberships, email addresses).
+* **A *full* attribute set** for all objects in the domain where the GC is also a domain controller.
 
 ---
 
@@ -59,3 +64,13 @@ s, [Local, Domain-local, Global, Universal]
 ---
 
 # Managiing
+
+---
+
+# SN
+
+## Partial Attribute Set
+adsiedit.msc
+Get-ADObject -SearchBase (Get-ADRootDSE).schemaNamingContext `
+  -LDAPFilter "(isMemberOfPartialAttributeSet=TRUE)" -Properties lDAPDisplayName |
+  Select-Object lDAPDisplayName
